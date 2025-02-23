@@ -75,7 +75,7 @@ namespace LowLevelDrivers
 			get {
 				if (this.disposed) throw new ObjectDisposedException(nameof(PCA9685));
 
-				return (int)(25000000 / (4096 * (this.ReadRegister(Register.Prescale) + 1)) / 0.9);
+				return (int)(25_000_000 / (4096 * (this.ReadRegister(Register.Prescale) + 1)) / 0.9);
 			}
 			set {
 				if (this.disposed) throw new ObjectDisposedException(nameof(PCA9685));
@@ -173,16 +173,18 @@ namespace LowLevelDrivers
 			this.device.Write(this.write2);
 		}
 
-		private byte ReadRegister(Register register) {
-			
-                this.write1[0] = (byte)register;
+		private byte ReadRegister(Register register)
+		{
 
-                //this.read1 = this.device.Read(this.write1[0],1);
-                this.device.WriteRead(this.write1, this.read1);
-                //this.device.WriteByte(this.write1[0]);
-                //this.read1 = this.device.Read(this.write1[0],1);
-                return this.read1[0];
-           
+			this.write1[0] = (byte)register;
+
+			//this.read1 = this.device.Read(this.write1[0],1);
+			this.device.WriteRead(this.write1, this.read1);
+			//this.device.WriteByte(this.write1[0]);
+			//this.device.Read(this.read1);
+			//this.read1 = this.device.Read(this.write1[0],1);
+			return this.read1[0];
+
 		}
 	}
 }
