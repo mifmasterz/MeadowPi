@@ -161,8 +161,8 @@ namespace GHI
                 this.disposed = true;
             }
         }
-        static Mono.Linux.I2C.I2CBus i2cBus;
-        //static I2cBus i2cBus;
+        //static Mono.Linux.I2C.I2CBus i2cBus;
+        static I2cBus i2cBus;
         /// <summary>
         /// Creates a new instance of the FEZ HAT.
         /// </summary>
@@ -174,8 +174,8 @@ namespace GHI
             var hat = new FezHat();
             if (i2cBus == null)
             {
-                i2cBus = new Mono.Linux.I2C.I2CBus (0x01);
-                //i2cBus = I2cBus.Create(0x01);
+                //i2cBus = new Mono.Linux.I2C.I2CBus (0x01);
+                i2cBus = I2cBus.Create(0x01);
 
             }
             //I2CDevice i2c_accelerometer = Pi.I2C.AddDevice(MMA8453.GetAddress(false));
@@ -191,37 +191,37 @@ namespace GHI
             //I2CDevice i2c_pwm = Pi.I2C.AddDevice(PCA9685.GetAddress(true, true, true, true, true, true));
             //var i2c_pwm = new Mono.Linux.I2C.I2CDevice(i2cBus, PCA9685.GetAddress(true, true, true, true, true, true));
             var i2c_pwm = I2cDevice.Create(new I2cConnectionSettings(1, PCA9685.GetAddress(true, true, true, true, true, true)));//i2cBus.CreateDevice(PCA9685.GetAddress(true, true, true, true, true, true));//I2cDevice.Create(new I2cConnectionSettings(1, PCA9685.GetAddress(true, true, true, true, true, true))); //new Mono.Linux.I2C.I2CDevice(i2cBus, PCA9685.GetAddress(true, true, true, true, true, true));
-            var pin23 = controller.OpenPin(23, PinMode.Output);
-            hat.pwm = new PCA9685(i2c_pwm, pin23);// Pi.Gpio.Pin23);//Pi.Gpio.Pin13);x
+            var pin13 = controller.OpenPin(13, PinMode.Output);
+            hat.pwm = new PCA9685(i2c_pwm, pin13);// Pi.Gpio.Pin23);//Pi.Gpio.Pin13);x
             hat.pwm.OutputEnabled = true;
             hat.pwm.Frequency = 1500;
-            var Pin27 = controller.OpenPin(27, PinMode.Output);
-            var Pin25 = controller.OpenPin(25, PinMode.Output);
-            var Pin05 = controller.OpenPin(05, PinMode.Output);
-            var Pin01 = controller.OpenPin(01, PinMode.Output);
-            var Pin03 = controller.OpenPin(03, PinMode.Output);
+            var Pin16 = controller.OpenPin(16, PinMode.Output);
+            var Pin26 = controller.OpenPin(26, PinMode.Output);
+            var Pin24 = controller.OpenPin(24, PinMode.Output);
+            var Pin18 = controller.OpenPin(18, PinMode.Output);
+            var Pin22 = controller.OpenPin(22, PinMode.Output);
             //mapping wiring pi vs gpio win iot
-            hat.dio16 = Pin27;//Pi.Gpio.Pin27;//Pi.Gpio.Pin16;x
-            hat.dio26 = Pin25;//Pi.Gpio.Pin25;//Pi.Gpio.Pin26;x
-            hat.dio24 = Pin05;//Pi.Gpio.Pin05;//Pi.Gpio.Pin24;x
-            hat.dio18 = Pin01;//Pi.Gpio.Pin01;//Pi.Gpio.Pin18;x
-            hat.dio22 = Pin03;//Pi.Gpio.Pin03;//Pi.Gpio.Pin22;x
+            hat.dio16 = Pin16;//Pi.Gpio.Pin27;//Pi.Gpio.Pin16;x
+            hat.dio26 = Pin26;//Pi.Gpio.Pin25;//Pi.Gpio.Pin26;x
+            hat.dio24 = Pin24;//Pi.Gpio.Pin05;//Pi.Gpio.Pin24;x
+            hat.dio18 = Pin18;//Pi.Gpio.Pin01;//Pi.Gpio.Pin18;x
+            hat.dio22 = Pin22;//Pi.Gpio.Pin03;//Pi.Gpio.Pin22;x
 
             hat.dio16.SetPinMode(PinMode.Input);// = GpioPinDriveMode.Input;
             hat.dio26.SetPinMode(PinMode.Input);//.PinMode = GpioPinDriveMode.Input;
             hat.dio24.SetPinMode(PinMode.Output);//.PinMode = GpioPinDriveMode.Output;
             hat.dio18.SetPinMode(PinMode.Input);//.PinMode = GpioPinDriveMode.Input;
             hat.dio22.SetPinMode(PinMode.Input);//.PinMode = GpioPinDriveMode.Input;
-            var Pin26 = controller.OpenPin(26, PinMode.Output);
-            hat.motorEnable = Pin26;// Pi.Gpio.Pin26;//Pi.Gpio.Pin12;x
+            var Pin12 = controller.OpenPin(12, PinMode.Output);
+            hat.motorEnable = Pin12;// Pi.Gpio.Pin26;//Pi.Gpio.Pin12;x
             hat.motorEnable.SetPinMode(PinMode.Output);//PinMode = GpioPinDriveMode.Output;
             hat.motorEnable.Write(PinValue.High);
-            var Pin02 = controller.OpenPin(2, PinMode.Output);
-            var Pin22 = controller.OpenPin(22, PinMode.Output);
-            var Pin04 = controller.OpenPin(04, PinMode.Output);
-            var Pin21 = controller.OpenPin(21, PinMode.Output);
-            hat.MotorA = new Motor(hat.pwm, 14, Pin02, Pin04);//Pi.Gpio.Pin02, Pi.Gpio.Pin04);//Pi.Gpio.Pin27, Pi.Gpio.Pin23);x
-            hat.MotorB = new Motor(hat.pwm, 13, Pin22, Pin21);//Pi.Gpio.Pin22, Pi.Gpio.Pin21);//Pi.Gpio.Pin06, Pi.Gpio.Pin05);x
+            var Pin27 = controller.OpenPin(27, PinMode.Output);
+            var Pin6 = controller.OpenPin(6, PinMode.Output);
+            var Pin23 = controller.OpenPin(23, PinMode.Output);
+            var Pin5 = controller.OpenPin(5, PinMode.Output);
+            hat.MotorA = new Motor(hat.pwm, 14, Pin27, Pin23);//Pi.Gpio.Pin02, Pi.Gpio.Pin04);//Pi.Gpio.Pin27, Pi.Gpio.Pin23);x
+            hat.MotorB = new Motor(hat.pwm, 13, Pin6, Pin5);//Pi.Gpio.Pin22, Pi.Gpio.Pin21);//Pi.Gpio.Pin06, Pi.Gpio.Pin05);x
 
             hat.D2 = new RgbLed(hat.pwm, 1, 0, 2);
             hat.D3 = new RgbLed(hat.pwm, 4, 3, 15);

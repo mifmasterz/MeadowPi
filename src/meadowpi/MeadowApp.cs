@@ -4,20 +4,25 @@ using Meadow;
 using System;
 using LowLevelDrivers;
 using Meadow.Hardware;
+using Meadow.Foundation.ICs.IOExpanders;
 
 namespace meadowpi
 {
     public class MeadowApp : App<RaspberryPi>
     {
-        
-        private static GHI.FezHat hat;
-        private static Timer timer;
-        private static bool next;
-        private static int i;
+        private Pca9685 pca9685;
+        //private static GHI.FezHat hat;
+        //private static Timer timer;
+        //private static bool next;
+        //private static int i;
         public override Task Initialize()
         {
             Resolver.Log.Info("Initialize...");
-           
+            var i2CBus = Device.CreateI2cBus(1,I2cBusSpeed.FastPlus);
+
+            pca9685 = new Pca9685(i2CBus, new Meadow.Units.Frequency(50, Meadow.Units.Frequency.UnitType.Hertz), (byte)Pca9685.Addresses.Default);
+
+
             return Task.CompletedTask;
         }
 
@@ -26,9 +31,10 @@ namespace meadowpi
             Resolver.Log.Info("Run...");
 
             Resolver.Log.Info("Hello, Raspberry Pi!");
-            TestFezHat();
+            //TestFezHat();
             return Task.CompletedTask;
         }
+        /*
         public void TestFezHat()
         {
 
@@ -103,5 +109,6 @@ namespace meadowpi
             }
 
         }
+        */
     }
 }
